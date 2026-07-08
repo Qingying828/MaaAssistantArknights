@@ -28,6 +28,11 @@ on:
       - "tools/maadeps-download.py"
       - "!**/*.md"
   workflow_dispatch:
+    inputs:
+      windows_x64_only:
+        description: "Only build Windows x64"
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}${{ github.ref == 'refs/heads/dev-v2' && format('-{0}', github.sha) || '' }}
@@ -101,7 +106,7 @@ jobs:
     needs: meta
     strategy:
       matrix:
-        arch: [arm64, x64]
+        arch: ${{ fromJSON(github.event_name == 'workflow_dispatch' && inputs.windows_x64_only == true && '["x64"]' || '["arm64", "x64"]') }}
       fail-fast: false
     runs-on: windows-2025-vs2026
 
@@ -247,6 +252,7 @@ jobs:
 
   ubuntu:
     name: Build for Ubuntu
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.windows_x64_only == true) }}
     needs: meta
     runs-on: ubuntu-latest
     strategy:
@@ -372,6 +378,7 @@ jobs:
 
   android:
     name: Build for Android
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.windows_x64_only == true) }}
     needs: meta
     runs-on: macos-26
     strategy:
@@ -445,6 +452,7 @@ jobs:
 
   macOS-Core:
     name: Build Core for macOS
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.windows_x64_only == true) }}
     needs: meta
     runs-on: macos-26
     strategy:
@@ -513,6 +521,7 @@ jobs:
 
   macOS-GUI:
     name: Build GUI for macOS
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.windows_x64_only == true) }}
     needs: [meta, macOS-Core]
     runs-on: macos-26
     steps:
@@ -675,6 +684,7 @@ jobs:
 
   avalonia:
     name: Build MAAUnified (Avalonia) ${{ matrix.name }}
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.windows_x64_only == true) }}
     needs: [meta, windows, ubuntu, macOS-Core]
     runs-on: ${{ matrix.os }}
     strategy:
