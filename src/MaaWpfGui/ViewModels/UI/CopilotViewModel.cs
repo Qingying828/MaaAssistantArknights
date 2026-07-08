@@ -1998,7 +1998,7 @@ public partial class CopilotViewModel : Screen
 
     private async Task<bool> AppendAndStartCopilotAsync(IEnumerable<UserAdditional> userAdditional)
     {
-        var ownedOpers = GetOwnedOperNames();
+        var ownedOpers = GetOwnedOperIds();
         if (!UseCopilotList)
         {
         }
@@ -2086,11 +2086,11 @@ public partial class CopilotViewModel : Screen
         return appended && Instances.AsstProxy.AsstStart();
     }
 
-    private static List<string> GetOwnedOperNames()
+    private static List<string> GetOwnedOperIds()
     {
         return Instances.ToolboxViewModel?.OperBoxHaveList
-            .Select(oper => oper.Name)
-            .Where(name => !string.IsNullOrWhiteSpace(name))
+            .Select(oper => oper.Id)
+            .Where(id => !string.IsNullOrWhiteSpace(id))
             .Distinct()
             .ToList() ?? [];
     }
