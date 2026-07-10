@@ -2149,11 +2149,6 @@ public partial class CopilotViewModel : Screen
             return false;
         }
 
-        if (missingGroups.Count == 1 && supportUnitUsage == 0)
-        {
-            supportUnitUsage = 1;
-        }
-
         return true;
     }
 
