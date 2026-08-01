@@ -38,7 +38,7 @@ struct CharAllocationResult
 };
 
 template <typename Oper, typename Status>
-[[nodiscard]] inline size_t mark_prechecked_missing_opers(
+inline size_t mark_prechecked_missing_opers(
     std::vector<Oper>& opers,
     const std::unordered_set<std::string>& prechecked_missing_opers,
     Status unchecked,
