@@ -2007,7 +2007,7 @@ public partial class CopilotViewModel : Screen
 
     private async Task<bool> AppendAndStartCopilotAsync(IEnumerable<UserAdditional> userAdditional)
     {
-        var supportUnitUsage = UseSupportUnitUsage ? SupportUnitUsage : 0;
+        var supportUnitUsage = UseSupportUnitUsage ? (int)SupportUnitUsage : 0;
         var preCheckedMissingOpers = new List<string>();
         if (!UseCopilotList)
         {
